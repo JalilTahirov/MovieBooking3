@@ -1,0 +1,115 @@
+﻿@model MovieBooking3.Models.UserMovie
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+
+        @if (ViewBag.Name != null)
+        {
+            <h4>Dear customer the movie you have choosen is "@ViewBag.Name"</h4> 
+                       
+        }
+
+
+        <hr />
+        <h5>Please provide required information to book!</h5>
+
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+       
+
+        <div class="form-group">
+            @Html.Label("Phone Number", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control phoneField" } })
+                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MovieTime, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MovieTime, new { htmlAttributes = new { @class = "form-control timeField" } })
+                @Html.ValidationMessageFor(model => model.MovieTime, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Choose count", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PurchaseCount, new { htmlAttributes = new { @class = "form-control countField" } })
+                @Html.ValidationMessageFor(model => model.PurchaseCount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default booked" />
+            </div>
+        </div>
+    </div>
+}
+
+
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<span class="target" id="@ViewBag.id"></span>>
+
+
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        // when DOM is ready
+        $(document).ready(function () {
+
+            $(".booked").click(function (e) {
+                alert("hello");
+                var d = $(".target").attr("id");
+                var c = $(".countField").val();
+                var p = $(".phoneField").val();
+                var t = $(".timeField").val();
+                alert(p);
+                var data = {};
+                $.ajax({
+                    url: '/Home/Attend',
+                    type: 'POST',
+                    data: {
+                        movieId: d,
+                        count: c,
+                        phone: p,
+                        time: t
+                    },
+                    success: function (response) {  
+
+                        //alert(response);
+                        //data.AvailableCount = $('#lbl_' + d).text();
+                        //$('#lbl_' + d).text('');
+                        //$('#lbl_' + d).text(response)
+                        //one row : you find the id
+                        //fetch the the label id
+                        //empty the label
+                        //update
+                       // window.location.reload();
+                    },
+                    error: function (error) {                        
+                        //alert(error);
+                    }
+                });
+            })
+        });
+
+    </script>
+
+    }

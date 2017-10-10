@@ -1,0 +1,45 @@
+﻿@model IEnumerable<MovieBooking3.Models.UserMovie>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MovieTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PurchaseCount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Movie.MovieName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.PhoneNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MovieTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PurchaseCount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Movie.MovieName)
+        </td>
+        <td>
+            <a id="@item.UserMovieId">Edit</a> |
+            <a id="@item.UserMovieId">Details</a> |
+            <a id="@item.UserMovieId">Delete</a> 
+        </td>
+    </tr>
+}
+
+</table>

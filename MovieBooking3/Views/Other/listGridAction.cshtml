@@ -1,0 +1,263 @@
+﻿@model IEnumerable<MovieBooking3.Models.UserMovie>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MovieTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PurchaseCount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Movie.MovieName)
+        </th>
+        <th></th>
+    </tr>
+
+
+@foreach (var item in Model) {
+    <tr id="tr_@item.UserMovieId">    
+        <td id="phone_@item.UserMovieId" class="process">
+            <label>@item.PhoneNumber</label>                       
+        </td>
+        <td class="process" name="time">
+            @item.MovieTime
+        </td>
+        <td  class="process" name="count">
+            @item.PurchaseCount
+        </td>
+        <td  name="movie">
+            @item.Movie.MovieName
+        </td>
+        <td>
+            <a id="edit_@item.UserMovieId" class="editRow"  data-id="@item.UserMovieId">Edit</a>
+            <a id="save_@item.UserMovieId" class="saveRow" data-id="@item.UserMovieId">Save</a>            
+            <span>|</span>
+                     
+            <a class="deleteRow"  data-id="@item.UserMovieId">Delete</a>          
+        </td>
+    </tr>
+}
+</table>
+
+<a id="edit_all" class="editAllRows">Edit All</a>
+<a id="save_all" class="saveAllRows">Save All</a>  
+
+
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("a[id^=save]").hide();
+            $("#save_all").hide();
+
+
+
+
+        //////////////*************************edit
+
+            $(".editRow").click(function () {
+                var editID = $(this).attr("id");
+                var id = $(this).data('id');
+                // $(this).replace();
+
+
+                //to enable edit in rows
+                $("tr#tr_" + id + ">td.process").each(function () {
+                    var rowValue = $(this).text().trim();
+                    $(this).empty();
+                    // $(this).text(rowValue + "eeee");
+                    $(this).append('<input type=text class="input" id="input_' + id +'" '+ 'value="' + rowValue + '" />');
+
+                });
+
+                $("#edit_" + id).hide();
+                $("#save_" + id).show();
+
+
+            });
+
+
+   /////////////////////////////////****************
+
+
+            var MyAppUrlSettings = {
+                    MyUsefulUrl: '@Url.Action("editResult", "Other")',
+                DeleteUrl: '@Url.Action("deleteResult", "Other")',
+                EditAll: '@Url.Action("editAllResult", "Other")'
+                
+            }
+
+
+
+
+            /////////////////////////////////////***********save
+            $(".saveRow").click(function () {
+
+                var id = $(this).data('id');
+                var obj = {};
+                var i = 1;
+                obj["UserMovieId"] = id;
+
+
+                //for each element
+                $("tr#tr_" + id + ">td.process input").each(function () {
+                    var toSaveValue = $(this).val();
+                    //console.log(toSaveValue);
+                    obj["key" + i] = toSaveValue;
+                    i++;
+                    $(this).replaceWith(toSaveValue);
+                    // $(this).text(rowValue + "eeee");
+
+
+                });
+                $.ajax({
+                    type: "POST",
+                    url: MyAppUrlSettings.MyUsefulUrl,
+                    data: JSON.stringify(obj),      // NOTE CHANGE HERE
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (msg) {
+
+                    },
+                    error: function (msg) {
+                        alert('error');
+                    }
+
+                });
+
+                console.log(obj);
+
+
+                $("#save_" + id).hide();
+                $("#edit_" + id).show();
+
+
+            });
+
+
+
+
+
+
+            /////////////////////////////////******************delete
+
+            $(".deleteRow").click(function () {
+
+                var id = $(this).data('id');
+                $("tr#tr_" + id).empty();
+                $.ajax({
+                    type: "POST",
+                    url: MyAppUrlSettings.DeleteUrl,
+                    data: { usrmovieId: id },      // NOTE CHANGE HERE
+                    success: function (msg) {
+                        alert("deleted");
+                    },
+                    error: function (msg) {
+                        alert('error');
+                    }
+                });
+
+            });
+
+            $("#edit_all").click(function () {
+                var editID = $(this).attr("id");
+                var id = $(this).data('id');
+
+
+                //to enable edit in rows
+                $("tr>td.process").each(function () {
+                    var rowValue = $(this).text().trim();
+                    $(this).empty();
+                    // $(this).text(rowValue + "eeee");
+                    $(this).append('<input type=text class="input" id="input_' + id + '" ' + 'value="' + rowValue + '" />');
+                });
+                $("#edit_all").hide();
+                $("#save_all").show();
+            });
+
+
+
+            /////////////////////////////////////***********save all
+            $("#save_all").click(function () {
+                var obj = {};
+                var all_obj = [];
+
+                var listOfTickets = {};
+
+
+                var rowCount = $('.table tr').length;
+                console.log(rowCount);
+
+                for(j = 1; j < rowCount ; j++){
+                    //for each element
+                    var i = 1;
+                    obj["UserMovieId"] = j;
+                    $("tr#tr_" + j + ">td.process input").each(function () {
+                        var toSaveValue = $(this).val();
+                        obj["key" + i] = toSaveValue;
+                        i++;
+                        $(this).replaceWith(toSaveValue);
+                    });
+                    // all_obj["forTicketSave"] = obj;
+                    //change for git dsdsdsd
+                    //yyyyyy
+                    all_obj.push(obj)
+                }
+                debugger;
+                console.log(all_obj);
+                $.ajax({
+                    type: "POST",
+                    url: MyAppUrlSettings.EditAll,
+                    data: JSON.stringify(all_obj),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (msg) {
+                    },
+                    error: function (msg) {
+                        alert('error');
+                    }
+                });
+
+                console.log(obj);
+
+                $("#save_all").hide();
+                $("#edit_all").show();
+
+            });
+        });
+
+
+        </script>
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

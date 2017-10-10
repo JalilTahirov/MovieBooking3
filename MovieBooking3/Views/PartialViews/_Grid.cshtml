@@ -1,0 +1,53 @@
+﻿@model IEnumerable<MovieBooking3.Models.Movie>
+
+@{
+    Layout = null;
+}
+
+
+
+<div id="ticketSubmit" style="display:block">
+    <h2>this is second partial view</h2>
+
+</div><!-- end active_part -->
+
+
+
+
+<table class="table" id="tblId">
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <a href="javascript:void(0)" class="aaf" id=@item.MovieId>@item.MovieName</a>
+               @Html.ActionLink(item.MovieName, "selectedMovie", "Home", new { @id = item.MovieId, @name = item.MovieName } )
+            </td>
+            <td>
+                @Ajax.ActionLink(item.MovieName, "selectedMovie", "Home",
+    new AjaxOptions() { UpdateTargetId = "ticketSubmit" })
+
+            </td>
+
+            <td>
+                <label id="lbl_@item.MovieId">@item.Available</label>
+            </td>
+
+            <td>
+                <!----> <input type="button" name="clickme" id="btnClick" />
+                <button data-movie-id="@item.MovieId" id="btn_click_@item.MovieId" class="btn btn-default btn-sm pull-right js-booked"> Book! </button>
+                -->
+            </td>
+        </tr>
+
+    }
+
+</table>
+
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+

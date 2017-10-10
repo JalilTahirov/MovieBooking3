@@ -1,0 +1,223 @@
+﻿@model IEnumerable<MovieBooking3.Models.Movie>
+
+
+
+
+
+
+
+<h2>Choose a Movie</h2>
+
+
+
+@*<table class="table">
+    <a href="~/Views/Home/DashBoard.cshtml">~/Views/Home/DashBoard.cshtml</a>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.MovieName, "selectedMovie", "Home", new { @id = item.MovieId, @name = item.MovieName }, null)
+                </td>
+                <td>
+                    <label id="lbl_@item.MovieId">@item.Available</label>
+                </td>
+
+                <td>
+                    <!-- <input type="button" name="clickme" id="btnClick" />-->
+                    <button data-movie-id="@item.MovieId" id="btn_click_@item.MovieId" class="btn btn-default btn-sm pull-right js-booked"> Book! </button>
+
+                </td>
+            </tr>
+
+        }
+
+    </table>*@  
+
+
+<div id="grid">
+    @{Html.RenderAction("CallPartial", "Home");}
+</div><!-- end active_part -->
+
+
+
+
+@* @{Html.RenderAction("selectedMovie", "Home");}*@
+
+
+
+
+
+
+
+   
+
+
+<div class="container">
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            @Html.ActionLink("XYZ", "selectedMovie", "Home", new { @id = 1, @name = "xyz" }, null)
+
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Some text in the modal.</p>
+                </div>
+                <!-- this is button to book and also will change class for movie in the window in the popup
+                     <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>-->
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+
+            $(".aaf").click(function () {
+                var d = $(this).text();
+                var c = $(this).attr("id");
+
+
+                $.get('@Url.Action("selectedMovie", "Home")', {}, function (response) {
+                    $("#ticketSubmit").html(response);
+                });
+
+            });
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        @*
+
+             $.ajax({
+                    url: '/Home/selectedMovie',
+                    type: 'POST',
+                    data: {
+                        movieName: d,
+                        mId: c
+                    },
+                    success: function (response) {
+                        alert("success");
+
+                    },
+                    error: function (error) {
+                        //alert(error);
+                    }
+                });
+
+
+
+
+
+           $(document).ready(function () {
+
+            $(".aaf").on("click", function () {
+                alert("Hello");
+                $("#ticketSubmit").css("display", "block");
+            });
+
+
+
+        });
+
+
+
+
+
+
+            var url = '@Url.Action("selectedMovie", "Home")';
+        someFunction()
+        {
+
+            $('#ticketSubmit').load(url);
+        }*@
+    </script>
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+
+
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        // when DOM is ready
+        $(document).ready(function () {
+            $(".js-booked").click(function (e) {
+                var d = $(this).data('movie-id');
+              
+                $.ajax({
+                    url: '/Home/Attend',
+                    type: 'POST',
+                    data: { movieId: d },
+                    success: function (response) {
+                        //one row : you find the id
+                        //fetch the the label id
+                        //empty the label
+                        //update
+                        window.location.reload();
+                       
+                    },
+                    error: function (error) {
+                        alert(error);
+                    }
+                });
+            })
+        });
+
+    </script>
+
+}*@
+
+
+
+

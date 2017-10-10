@@ -1,0 +1,57 @@
+﻿@import "compass/css3";
+
+.wrapper {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;  
+  
+  -webkit-flex-flow: row wrap;
+  flex-flow: row wrap;
+  
+  font-weight: bold;
+  text-align: center;
+}
+
+.wrapper > * {
+  padding: 45px;
+  flex: 1 100%;
+}
+
+.header {
+  background: tomato;
+}
+
+.footer {
+  background: lightgreen;
+}
+
+.main {
+  text-align: left;
+  background: lavender;
+}
+
+.aside-1 {
+  background: gold;
+}
+
+.aside-2 {
+  background: gold;
+}
+
+@media all and (min-width: 600px) {
+  .aside { flex: 2 auto; }
+}
+
+@media all and (min-width: 800px) {
+  .main    { flex: 3 700px; }
+  .aside-1 { order: 1; } 
+  .main    { order: 2; }
+  .aside-2 { order: 3; }
+
+}
+
+body {
+  padding: 2em; 
+}
